@@ -37,7 +37,7 @@ $('#yval').val(db.yval);
 $('#zval').val(db.zval);
 
 
-// set size of graph from 
+// set size of graph from
 graph.height(db.height);
 graph.width(db.width);
 
@@ -81,7 +81,7 @@ db.on("change", function(event) {
     $('#yval').val(db.yval);
     $('#zval').val(db.zval);
 
-    
+
     recalculate_surface();
 
 });
@@ -103,7 +103,7 @@ scene.add(camera);
 
 camera.position.set(30,60,40);
 camera.up = new THREE.Vector3(0,0,1);
-camera.lookAt(scene.position);	
+camera.lookAt(scene.position);
 
 //var controls = new TrackballControls( camera, renderer.domElement );
 var controls = new OrbitControls( camera, renderer.domElement );
@@ -114,7 +114,7 @@ function f_surface(u,v) {
     var x = xt.f({u: u, v:v});
     var y = yt.f({u: u, v:v});
     var z = zt.f({u: u, v:v, x:x, y:y});
-    
+
     return new THREE.Vector3(x, y, z);
 }
 
@@ -141,7 +141,6 @@ scene.add( light );
 light = new THREE.DirectionalLight( 0x555555 );
 light.position.set( 0, 0, -10 );
 scene.add( light );
-
 light = new THREE.AmbientLight( 0x222222 );
 scene.add( light );
 
@@ -153,7 +152,7 @@ scene.add( light );
 //     fontFamily: 'Arial, Helvetica, sans-serif',
 //   },
 //   material: {
-//     color: 0xffbbff,
+//     color 0xffbbff,
 //     fog: false,
 //   },
 // });
@@ -162,6 +161,9 @@ scene.add( light );
 // sprite.scale.set(0.1,0.1,0.1);
 // console.log(sprite.scale);
 
+let label = new TextLabel("hello world");
+
+scene.add(label);
 
 // animation loop
 animate();
@@ -174,21 +176,21 @@ function animate() {
 
 
 function recalculate_surface() {
-    
+
     // should be a way to avoid this check
     // but now, can get called before surface defined
     if(surfaceGeometry === undefined)
 	return;
-    
+
     for (var i = 0; i <= Nv; i ++ ) {
 	var v = i / Nv;
-	
+
 	for (var j = 0; j <= Nu; j ++ ) {
-	    
+
 	    var u = j / Nu;
-	    
+
 	    surfaceGeometry.vertices[i*(Nu+1)+j].copy(f_surface( u, v ));
-	    
+
 	}
     }
     surfaceGeometry.dynamic=true;
