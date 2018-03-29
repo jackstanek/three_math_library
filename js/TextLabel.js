@@ -7,14 +7,14 @@
 
 'use strict';
 
-var TextLabel = function (message, parameters) {
+var CanvasTextLabel = function (message, parameters) {
     if (!parameters) {
         parameters = {};
     }
 
     var fontFace   = parameters.fontFace   || "Arial";
-    var fontSize   = parameters.fontSize   || 120;
-    var scale      = parameters.scale      || 2;
+    var fontSize   = parameters.fontSize   || 512;
+    var scale      = parameters.scale      || 25;
     var textColor  = parameters.textColor  || "#000000";
     var fontWeight = parameters.fontWeight || "Bold ";
 
@@ -27,25 +27,28 @@ var TextLabel = function (message, parameters) {
 
     var metrics = this.context.measureText(message);
     this.canvas.width  = metrics.width;
-    this.canvas.height = metrics.height;
+    this.canvas.height = fontSize;
 
-    this.context.fillText( message, this.canvas.width/2, this.canvas.height/2, this.canvas.width);
+    this.context.fillText(message, this.canvas.width/2, this.canvas.height/2, this.canvas.width);
 
     // canvas contents will be used for a texture
     this.texture = new THREE.CanvasTexture(this.canvas);
-    var material = new THREE.SpriteMaterial({map: this.texture});
+    this.material = new THREE.SpriteMaterial({map: this.texture});
 
-    THREE.Sprite.call(this, material);
+    THREE.Sprite.call(this, this.material);
 
     this.scale.set(scale, scale, 1);
 }
 
-TextLabel.prototype = Object.create( THREE.Sprite.prototype );
+CanvasTextLabel.prototype = Object.create(THREE.Sprite.prototype);
 
 // change the text label to a new message
-TextLabel.prototype.set = function(message) {
+CanvasTextLabel.prototype.set = function(message) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    let metrics = this.context.measureText(message);
+    this.canvas.width = metrics.width;
+    this.canvas.height = metrics.height;
     this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2, this.canvas.width);
     this.texture.needsUpdate = true;
 }

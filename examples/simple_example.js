@@ -41,6 +41,19 @@ SimpleExample.App = function(div = document.body) {
     this.scene.add(new THREE.Mesh(this.surfaceGeometry,
                                   new THREE.MeshLambertMaterial({color:0x999999,
                                                                  side: THREE.DoubleSide})));
+
+    var xlabel = new CanvasTextLabel("x");
+    xlabel.position.set(3, 0, 0);
+    this.scene.add(xlabel);
+
+    var ylabel = new CanvasTextLabel("y");
+    ylabel.position.set(0, 3, 0);
+    this.scene.add(ylabel);
+
+    var zlabel = new CanvasTextLabel("z");
+    zlabel.position.set(0, 0, 3);
+    this.scene.add(zlabel);
+
     div.appendChild(this.renderer.domElement);
 }
 
