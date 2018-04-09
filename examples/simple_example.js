@@ -66,6 +66,6 @@ SimpleExample.App.prototype.animate = function() {
 }
 
 window.onload = function() {
-    let app = new SimpleExample.App();
+    let app = new SimpleExample.App(document.getElementById("display-container"));
     app.animate();
 }
