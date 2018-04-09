@@ -1,4 +1,4 @@
-// add text label 
+// add text label
 
 // still need to work on getting the text to show up at a good size
 // If make font size small, then it shows up blurry.
@@ -7,60 +7,59 @@
 
 'use strict';
 
-var TextLabel = function (message, parameters) {
+var CanvasTextLabel = function (message, parameters) {
+    /* Nested helper function to find the next largest power of two */
+    function nextPowerOfTwo(x) {
+        return Math.pow(2, Math.ceil(Math.log2(x)));
+    }
 
-    if ( parameters === undefined ) parameters = {};
-    
-    var fontFace = parameters.hasOwnProperty("fontFace") ? 
-	parameters["fontFace"] : "Arial";
-    
-    var fontSize = parameters.hasOwnProperty("fontSize") ? 
-	parameters["fontSize"] : 120;
+    if (!parameters) {
+        parameters = {};
+    }
 
-    var scale = parameters.hasOwnProperty("scale") ? 
-	parameters["scale"] : 2;
-	
-	var textColor = parameters.hasOwnProperty("textColor") ? 
-	parameters["textColor"] : '#000000';
-	
-	var fontWeight = parameters.hasOwnProperty("fontWeight") ? 
-	parameters["fontWeight"] : "Bold ";
+    var fontFace   = parameters.fontFace   || "sans-serif";
+    var fontSize   = parameters.fontSize   || 512;
+    var scale      = parameters.scale      || 0.7;
+    var textColor  = parameters.textColor  || "#000000";
+    var fontWeight = parameters.fontWeight || "Bold ";
 
-    this.canvas = document.createElement('canvas');
-    this.canvas.width=512;
-    this.canvas.height=256;
-    this.context = this.canvas.getContext('2d');
+    /* Make a canvas drawing context */
+    var canvas = document.createElement('canvas');
+    this.context = canvas.getContext('2d');
+
+    /* Do font measurement to get a correct canvas size */
+    this.context.font  = fontWeight + fontSize + "px " + fontFace;
+    var metrics = this.context.measureText(message);
+    canvas.width  = nextPowerOfTwo(metrics.width);
+    canvas.height = nextPowerOfTwo(fontSize);
+
+    /* Reset our font style */
+    this.context.font         = fontWeight + fontSize + "px " + fontFace;
+    this.context.fillStyle    = textColor;
+    this.context.textBaseline = "bottom";
     this.context.font = fontWeight + fontSize + "px " + fontFace;
-    
-    
-    this.context.fillStyle = textColor;
-    
-    this.context.textAlign = "center";
-    this.context.textBaseline = "middle";
-    this.context.fillText( message, this.canvas.width/2, this.canvas.height/2, this.canvas.width);
+
+    this.context.fillText(message, 0, canvas.height, canvas.width);
 
     // canvas contents will be used for a texture
-    this.texture = new THREE.Texture(this.canvas) 
-    this.texture.needsUpdate = true;
+    this.texture = new THREE.CanvasTexture(canvas);
+    this.material = new THREE.SpriteMaterial({map: this.texture});
 
-    var material = new THREE.SpriteMaterial( 
-	{ map: this.texture } );
+    THREE.Sprite.call(this, this.material);
 
-    THREE.Sprite.call(this, material) ;
-
-    this.scale.set(scale,scale,1);
-
+    this.scale.set(scale, scale, 1);
 }
 
-TextLabel.prototype = Object.create( THREE.Sprite.prototype );
+CanvasTextLabel.prototype = Object.create(THREE.Sprite.prototype);
 
-// change the text label to a new message
-TextLabel.prototype.set = function(message) {
+// TODO: change the text label to a new message
+// Will require a little bit of refactoring of the constructor as well-
+CanvasTextLabel.prototype.set = function(message) {
+    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    this.context.fillText( message, this.canvas.width/2, this.canvas.height/2, this.canvas.width);
-    this.texture.needsUpdate = true;
-	    
+    // let metrics = this.context.measureText(message);
+    // this.canvas.width = metrics.width;
+    // this.canvas.height = metrics.height;
+    // this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2, this.canvas.width);
+    // this.texture.needsUpdate = true;
 }
-	    
