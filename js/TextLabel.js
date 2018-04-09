@@ -43,7 +43,6 @@ var CanvasTextLabel = function (message, parameters) {
 
     // canvas contents will be used for a texture
     this.texture = new THREE.CanvasTexture(canvas);
-    this.texture.minFilter = THREE.NearestFilter;
     this.material = new THREE.SpriteMaterial({map: this.texture});
 
     THREE.Sprite.call(this, this.material);
@@ -53,13 +52,14 @@ var CanvasTextLabel = function (message, parameters) {
 
 CanvasTextLabel.prototype = Object.create(THREE.Sprite.prototype);
 
-// change the text label to a new message
+// TODO: change the text label to a new message
+// Will require a little bit of refactoring of the constructor as well-
 CanvasTextLabel.prototype.set = function(message) {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    let metrics = this.context.measureText(message);
-    this.canvas.width = metrics.width;
-    this.canvas.height = metrics.height;
-    this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2, this.canvas.width);
-    this.texture.needsUpdate = true;
+    // let metrics = this.context.measureText(message);
+    // this.canvas.width = metrics.width;
+    // this.canvas.height = metrics.height;
+    // this.context.fillText(message, this.canvas.width / 2, this.canvas.height / 2, this.canvas.width);
+    // this.texture.needsUpdate = true;
 }
