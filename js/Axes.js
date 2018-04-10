@@ -33,7 +33,6 @@
 
 
 var Axes = function (params) {
-
     if (params === undefined) { var params = {}; }
 
     if (!isNaN(params)) {//i.e. if params is a number, convert it to object format
@@ -66,7 +65,7 @@ var Axes = function (params) {
     if (params.labelFontSize === undefined) { params.labelFontSize = 120; }
     if (params.labelScale === undefined) { params.labelScale = 2; }
     if (params.labelColor === undefined) { params.labelColor = '#000000'; }
-    if (params.axisWidth === undefined) { 
+    if (params.axisWidth === undefined) {
 	if(params.showBoxAxes) {
 	    params.axisWidth = 2;}
 	else {
@@ -93,8 +92,8 @@ var Axes = function (params) {
     if (params.tickLabelSpace === undefined) { params.tickLabelSpace= 0.06; }
     if (params.tickLabelDigits === undefined) { params.tickLabelDigits= 1; }
 
-    var tickLabelRoundFactor = Math.pow(10,params.tickLabelDigits); 
-    
+    var tickLabelRoundFactor = Math.pow(10,params.tickLabelDigits);
+
     if (params.boxAxisTicksXSide === undefined) { params.boxAxisTicksXSide = 1; };
     if (params.boxAxisTicksYSide === undefined) { params.boxAxisTicksYSide = 1; };
     if (params.boxAxisTicksZSide === undefined) { params.boxAxisTicksZSide = 1; };
@@ -155,13 +154,13 @@ var Axes = function (params) {
             new THREE.Vector3(params.negSize.x, params.size.y, params.negSize.z),
             new THREE.Vector3(params.negSize.x, params.negSize.y, params.negSize.z)
         );
-	
+
 	// box axis ticks
 	if (params.showAxisTicks) {
 
 	    var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	    var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var x=i*params.axisTickIncrement.x;
 		if(params.boxAxisTicksXSide==1) {
@@ -180,7 +179,7 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.y/params.axisTickIncrement.y);
 	    tickMaxInd = Math.floor(params.size.y/params.axisTickIncrement.y);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var y=i*params.axisTickIncrement.y;
 
@@ -200,7 +199,7 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.z/params.axisTickIncrement.z);
 	    tickMaxInd = Math.floor(params.size.z/params.axisTickIncrement.z);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var z=i*params.axisTickIncrement.z;
 
@@ -223,7 +222,7 @@ var Axes = function (params) {
     }
     // standard axes
     else {
-	
+
         geometry.vertices.push(
 	    new THREE.Vector3(), new THREE.Vector3(params.size.x, 0, 0),
 	    new THREE.Vector3(), new THREE.Vector3(0, params.size.y, 0),
@@ -235,7 +234,7 @@ var Axes = function (params) {
 	if (params.showAxisTicks) {
 	    var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	    var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var x=i*params.axisTickIncrement.x;
 		geometry.vertices.push(new THREE.Vector3(x, -(params.size.y-params.negSize.y)*params.axisTickSize, 0), new THREE.Vector3(x, (params.size.y-params.negSize.y)*params.axisTickSize, 0))
@@ -254,7 +253,7 @@ var Axes = function (params) {
 		geometry.vertices.push(new THREE.Vector3(0, -(params.size.y-params.negSize.y)*params.axisTickSize, z), new THREE.Vector3(0, (params.size.y-params.negSize.y)*params.axisTickSize, z))
             }
 	}
-	
+
     }
 
 
@@ -267,7 +266,7 @@ var Axes = function (params) {
 
 	    var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	    var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var x=i*params.axisTickIncrement.x;
 		var xRound = Math.round(x*params.tickLabelRescale.x*tickLabelRoundFactor)/tickLabelRoundFactor
@@ -291,7 +290,7 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.y/params.axisTickIncrement.y);
 	    tickMaxInd = Math.floor(params.size.y/params.axisTickIncrement.y);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var y=i*params.axisTickIncrement.y;
 		var yRound = Math.round(y*params.tickLabelRescale.y*tickLabelRoundFactor)/tickLabelRoundFactor
@@ -317,14 +316,14 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.z/params.axisTickIncrement.z);
 	    tickMaxInd = Math.floor(params.size.z/params.axisTickIncrement.z);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var z=i*params.axisTickIncrement.z;
 		var zRound = Math.round(z*params.tickLabelRescale.z*tickLabelRoundFactor)/tickLabelRoundFactor
 
 		var sprite = new TextLabel(zRound.toString(), { fontSize: params.axisTickLabelFontSize, scale: params.labelScale, textColor: params.labelColor, fontWeight: "" });
 		this.add(sprite);
-		
+
 		if(params.boxAxisTicksZSide==1) {
 		    sprite.position.set(params.size.x + (params.size.x-params.negSize.x) *params.tickLabelSpace, params.size.y + (params.size.y-params.negSize.y)*params.tickLabelSpace, z);
 		}
@@ -343,7 +342,7 @@ var Axes = function (params) {
 
 	// labels for box axes
 	if (params.showLabels) {
-	    
+
             var spritex = new TextLabel(params.labelx, { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor });
 	    this.add(spritex);
 	    if(params.boxAxisTicksXSide==1) {
@@ -354,14 +353,14 @@ var Axes = function (params) {
 	    }
 	    else if(params.boxAxisTicksXSide==3) {
 		spritex.position.set((params.size.x + params.negSize.x)/2, params.negSize.y - (params.size.y-params.negSize.y) *params.axisLabelSpace, params.negSize.z - (params.size.z-params.negSize.z)*params.axisLabelSpace);
-	    }    
+	    }
 	    else if(params.boxAxisTicksXSide==4) {
 		spritex.position.set((params.size.x + params.negSize.x)/2, params.size.y + (params.size.y-params.negSize.y) *params.axisLabelSpace, params.negSize.z - (params.size.z-params.negSize.z)*params.axisLabelSpace);
 	    }
-	    
+
 	    var spritey = new TextLabel(params.labely, { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor });
 	    this.add(spritey);
-	    
+
 	    if(params.boxAxisTicksYSide==1) {
 		spritey.position.set(params.size.x + (params.size.x-params.negSize.x) *params.axisLabelSpace, (params.size.y + params.negSize.y)/2, params.size.z + (params.size.z-params.negSize.z)*params.axisLabelSpace);
 	    }
@@ -377,7 +376,7 @@ var Axes = function (params) {
 
 	    var spritez = new TextLabel(params.labelz, { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor });
 	    this.add(spritez);
-	    
+
 	    if(params.boxAxisTicksZSide==1) {
 		spritez.position.set(params.size.x + (params.size.x-params.negSize.x) *params.axisLabelSpace, params.size.y + (params.size.y-params.negSize.y)*params.axisLabelSpace, (params.size.z + params.negSize.z)/2);
 	    }
@@ -404,11 +403,11 @@ var Axes = function (params) {
 	if (params.showAxisTickLabels) {
 	    var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	    var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var x=i*params.axisTickIncrement.x;
 		var xRound = Math.round(x*tickLabelRoundFactor)/tickLabelRoundFactor
-		
+
 		if (i != 0) {
 		    var sprite = new TextLabel(xRound.toString(), { fontSize: params.axisTickLabelFontSize, scale: params.labelScale, textColor: params.labelColor, fontWeight: "" });
 		    sprite.position.set(x, (params.size.y-params.negSize.y)*params.tickLabelSpace, 0);
@@ -418,7 +417,7 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.y/params.axisTickIncrement.y);
 	    tickMaxInd = Math.floor(params.size.y/params.axisTickIncrement.y);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var y=i*params.axisTickIncrement.y;
 		var yRound = Math.round(y*tickLabelRoundFactor)/tickLabelRoundFactor
@@ -431,7 +430,7 @@ var Axes = function (params) {
 
 	    tickMinInd = Math.ceil(params.negSize.z/params.axisTickIncrement.z);
 	    tickMaxInd = Math.floor(params.size.z/params.axisTickIncrement.z);
-	    
+
 	    for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 		var z=i*params.axisTickIncrement.z;
 		var zRound = Math.round(z*tickLabelRoundFactor)/tickLabelRoundFactor
@@ -442,11 +441,11 @@ var Axes = function (params) {
 		}
 	    }
 	}
-	
+
 
 	// labels for standard axes
 	if (params.showLabels) {
-	    
+
 
 	    var spritex = new TextLabel(params.labelx, { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor });
 	    spritex.position.set(params.size.x + (params.size.x - params.negSize.x) * 0.05, 0, 0);
@@ -477,27 +476,27 @@ Axes.prototype = Object.create(THREE.Line.prototype);
 var Axes2D = function (params) {
 
     if (params === undefined){var params = {};}
-    
+
     if (!isNaN(params)){//i.e. if params is a number, convert it to object format
 	var incomingSize = params;
 	params = {};
 	params.size = incomingSize;
     }
-    
+
     if (params.size === undefined) {
 	params.size = new THREE.Vector2(1,1);
     }
     else if(!(params.size instanceof THREE.Vector2)) {
 	params.size = new THREE.Vector2(params.size, params.size);
     }
-    
+
     if (params.negSize === undefined) {
 	params.negSize = params.size.clone().negate();
     }
     else if (!(params.negSize instanceof THREE.Vector2)) {
 	params.negSize = new THREE.Vector3(params.negSize,params.negSize);
     }
-    
+
     if (params.label  === undefined) {params.label = '';}
     if (params.labelx === undefined) {params.labelx = 'x';}
     if (params.labely === undefined) {params.labely = 'y';}
@@ -520,21 +519,21 @@ var Axes2D = function (params) {
     if (params.axisTickLabelFontSize === undefined) { params.axisTickLabelFontSize = params.labelFontSize; }
     if (params.showZeroTickLabels === undefined) { params.showZeroTickLabels = false; }
     if (params.tickLabelDigits === undefined) { params.tickLabelDigits= 1; }
-    var tickLabelRoundFactor = Math.pow(10,params.tickLabelDigits); 
+    var tickLabelRoundFactor = Math.pow(10,params.tickLabelDigits);
 
     var geometry = new THREE.Geometry();
-    
+
     geometry.vertices.push(
 	new THREE.Vector3(), new THREE.Vector3( params.size.x, 0, 0 ),
 	new THREE.Vector3(), new THREE.Vector3( 0, params.size.y, 0 ),
 	new THREE.Vector3(), new THREE.Vector3( params.negSize.x, 0, 0 ),
 	new THREE.Vector3(), new THREE.Vector3( 0, params.negSize.y, 0 )
     );
-    
+
     if (params.showAxisTicks) {
 	var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	
+
 	for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 	    var x=i*params.axisTickIncrement.x;
 	    geometry.vertices.push(new THREE.Vector3(x, -(params.size.y-params.negSize.y)*params.axisTickSize, 0), new THREE.Vector3(x, (params.size.y-params.negSize.y)*params.axisTickSize, 0))
@@ -550,23 +549,23 @@ var Axes2D = function (params) {
     var material = new THREE.LineBasicMaterial( { color: params.color, linewidth: params.axisWidth } );
 
     THREE.Line.call( this, geometry, material, THREE.LinePieces );
-    
+
     if (params.showLabels) {
-	
+
 	var spritex = new TextLabel( params.labelx,   { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor} );
 	spritex.position.set(params.size.x + (params.size.x-params.negSize.x)*0.05, 0, 0);
 	this.add( spritex );
 
-	
+
 	var spritey = new TextLabel( params.labely,   { fontSize: params.labelFontSize, scale: params.labelScale, textColor: params.labelColor} );
 	spritey.position.set(0, params.size.y + (params.size.y-params.negSize.y)*0.05, 0);
 	this.add( spritey );
-	
+
     }
     if (params.showAxisTickLabels) {
 	var tickMinInd = Math.ceil(params.negSize.x/params.axisTickIncrement.x);
 	var tickMaxInd = Math.floor(params.size.x/params.axisTickIncrement.x);
-	
+
 	for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 	    var x=i*params.axisTickIncrement.x
 	    var xRound = Math.round(x*tickLabelRoundFactor)/tickLabelRoundFactor
@@ -580,7 +579,7 @@ var Axes2D = function (params) {
 
 	tickMinInd = Math.ceil(params.negSize.y/params.axisTickIncrement.y);
 	tickMaxInd = Math.floor(params.size.y/params.axisTickIncrement.y);
-	
+
 	for (var i = tickMinInd; i <= tickMaxInd; i += 1) {
 	    var y=i*params.axisTickIncrement.y;
 	    var yRound = Math.round(y*tickLabelRoundFactor)/tickLabelRoundFactor

@@ -7,6 +7,14 @@
 
 'use strict';
 
+const CANVAS_TEXT_LABEL_DEFAULT_PARAMS = {
+    "fontFace": "serif",
+    "fontSize": 512,
+    "scale": 0.8,
+    "textColor": "#000000",
+    "fontWeight": "Bold"
+};
+
 var CanvasTextLabel = function (message, parameters) {
     /* Nested helper function to find the next largest power of two */
     function nextPowerOfTwo(x) {
@@ -17,27 +25,31 @@ var CanvasTextLabel = function (message, parameters) {
         parameters = {};
     }
 
-    var fontFace   = parameters.fontFace   || "sans-serif";
-    var fontSize   = parameters.fontSize   || 512;
-    var scale      = parameters.scale      || 0.7;
-    var textColor  = parameters.textColor  || "#000000";
-    var fontWeight = parameters.fontWeight || "Bold ";
+    setParamsFromDefaults(parameters,
+                          CANVAS_TEXT_LABEL_DEFAULT_PARAMS);
+
+    var fontFace   = parameters.fontFace;
+    var fontSize   = parameters.fontSize;
+    var scale      = parameters.scale;
+    var textColor  = parameters.textColor;
+    var fontWeight = parameters.fontWeight;
 
     /* Make a canvas drawing context */
     var canvas = document.createElement('canvas');
     this.context = canvas.getContext('2d');
 
+    var fontString = fontWeight + " " + fontSize + "px " + fontFace;
+
     /* Do font measurement to get a correct canvas size */
-    this.context.font  = fontWeight + fontSize + "px " + fontFace;
+    this.context.font = fontString;
     var metrics = this.context.measureText(message);
     canvas.width  = nextPowerOfTwo(metrics.width);
     canvas.height = nextPowerOfTwo(fontSize);
 
     /* Reset our font style */
-    this.context.font         = fontWeight + fontSize + "px " + fontFace;
     this.context.fillStyle    = textColor;
     this.context.textBaseline = "bottom";
-    this.context.font = fontWeight + fontSize + "px " + fontFace;
+    this.context.font         = fontString;
 
     this.context.fillText(message, 0, canvas.height, canvas.width);
 
@@ -46,6 +58,7 @@ var CanvasTextLabel = function (message, parameters) {
     this.material = new THREE.SpriteMaterial({map: this.texture});
 
     THREE.Sprite.call(this, this.material);
+    this.type = "CanvasTextLabel";
 
     this.scale.set(scale, scale, 1);
 }
