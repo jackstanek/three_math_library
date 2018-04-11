@@ -42,17 +42,23 @@ SimpleExample.App = function(div = document.body) {
                                   new THREE.MeshLambertMaterial({color:0x999999,
                                                                  side: THREE.DoubleSide})));
 
-    var xlabel = new CanvasTextLabel("x");
-    xlabel.position.set(3, 0, 0);
-    this.scene.add(xlabel);
+    var xaxis = new Axis({axis: "x",
+                          label: "x",
+                          size: 6,
+                          negSize: 6});
+    this.scene.add(xaxis);
 
-    var ylabel = new CanvasTextLabel("y");
-    ylabel.position.set(0, 3, 0);
-    this.scene.add(ylabel);
+    var yaxis = new Axis({axis: "y",
+                          label: "y",
+                          size: 6,
+                          negSize: 6});
+    this.scene.add(yaxis);
 
-    var zlabel = new CanvasTextLabel("z");
-    zlabel.position.set(0, 0, 3);
-    this.scene.add(zlabel);
+    var zaxis = new Axis({axis: "z",
+                          label: "z",
+                          size: 6,
+                          negSize: 6});
+    this.scene.add(zaxis);
 
     div.appendChild(this.renderer.domElement);
 }

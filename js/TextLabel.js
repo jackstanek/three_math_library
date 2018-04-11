@@ -8,11 +8,11 @@
 'use strict';
 
 const CANVAS_TEXT_LABEL_DEFAULT_PARAMS = {
-    "fontFace": "serif",
-    "fontSize": 512,
-    "scale": 0.8,
-    "textColor": "#000000",
-    "fontWeight": "Bold"
+    fontFace: "serif",
+    fontSize: 512,
+    scale: 0.8,
+    textColor: "#000000",
+    fontWeight: "Bold"
 };
 
 var CanvasTextLabel = function (message, parameters) {
