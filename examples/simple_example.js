@@ -42,19 +42,19 @@ SimpleExample.App = function(div = document.body) {
                                   new THREE.MeshLambertMaterial({color:0x999999,
                                                                  side: THREE.DoubleSide})));
 
-    var xaxis = new Axis({axis: "x",
+    var xaxis = new Axis({axis: 0,
                           label: "x",
                           size: 6,
                           negSize: 6});
     this.scene.add(xaxis);
 
-    var yaxis = new Axis({axis: "y",
+    var yaxis = new Axis({axis: 1,
                           label: "y",
                           size: 6,
                           negSize: 6});
     this.scene.add(yaxis);
 
-    var zaxis = new Axis({axis: "z",
+    var zaxis = new Axis({axis: 2,
                           label: "z",
                           size: 6,
                           negSize: 6});
