@@ -1,27 +1,10 @@
 'use strict';
 
-/* Get the vector compotent from the letter name of its axis. */
-function axisLetterToIndex(letter) {
-    switch (letter) {
-    case "X":
-    case "x":
-        return 0;
-    case "Y":
-    case "y":
-        return 1;
-    case "Z":
-    case "z":
-        return 2;
-    default:
-        return NaN;
-    }
-}
-
+/* Some default axis labels for R3 */
+const AXIS_LABELS = ["x", "y", "z"];
 const AXIS_DEFAULT_PARAMS = {
-    axis: 0,
     size: 1,
     negSize: 1,
-    label: "x",
     showLabels: true,
     color: 0x000000,
     axisWidth: 2,
@@ -36,17 +19,17 @@ const AXIS_DEFAULT_PARAMS = {
  * "centered" around the origin and extends according to the lenght
  * parameters given.
  */
-var Axis = function(parameters) {
+var Axis = function(axis, label, parameters) {
     parameters = parameters || {};
     setParamsFromDefaults(parameters,
                           AXIS_DEFAULT_PARAMS);
-    let axisIndex = parameters.axis;
+
 
     /* Get some points to represent the ends of the axis */
     let minExtent = new THREE.Vector3(),
         maxExtent = new THREE.Vector3();
-    minExtent.setComponent(axisIndex, -parameters.negSize);
-    maxExtent.setComponent(axisIndex, parameters.size);
+    minExtent.setComponent(axis, -parameters.negSize);
+    maxExtent.setComponent(axis, parameters.size);
 
     /* Create a THREE geometry out of that */
     let geometry = new THREE.Geometry();
@@ -60,9 +43,9 @@ var Axis = function(parameters) {
     THREE.Line.call(this, geometry, material);
 
     /* add a label */
-    let label = new CanvasTextLabel(parameters.label);
-    label.position.setComponent(axisIndex, parameters.size);
-    this.add(label);
+    let text_label = new CanvasTextLabel(label);
+    text_label.position.setComponent(axis, parameters.size);
+    this.add(text_label);
 
     /* add tick marks */
     this.ticks = new Array();
@@ -71,11 +54,11 @@ var Axis = function(parameters) {
             tickMaxExtent = new THREE.Vector3();
 
         /* Set tick position along axis */
-        tickMinExtent.setComponent(axisIndex, tick);
-        tickMaxExtent.setComponent(axisIndex, tick);
+        tickMinExtent.setComponent(axis, tick);
+        tickMaxExtent.setComponent(axis, tick);
 
         /* "Inflate" the tick */
-        tickMaxExtent.setComponent((axisIndex + 1) % 3, parameters.axisTickSize);
+        tickMaxExtent.setComponent((axis + 1) % 3, parameters.axisTickSize);
 
         let tickGeometry = new THREE.Geometry();
         tickGeometry.vertices.push(tickMinExtent, tickMaxExtent);
@@ -84,6 +67,25 @@ var Axis = function(parameters) {
         this.ticks.push(tickObject);
         this.add(tickObject);
     }
+
+    this.type = "Axis";
 };
 
 Axis.prototype = Object.create(THREE.Line.prototype);
+
+/* An Axes3D object is an empty THREE.Object3D with three children
+ * which make up the basis axes for R3. The parameters object has the
+ * same properties as a single axis, and these properties are used to
+ * construct each axis.
+ */
+var Axes3D = function(parameters) {
+    THREE.Object3D.call(this);
+
+    for (let a = 0; a < 3; a++) {
+        this.add(new Axis(a, AXIS_LABELS[a], parameters));
+    }
+
+    this.type = "Axes3D";
+}
+
+Axes3D.prototype = Object.create(THREE.Object3D.prototype);
