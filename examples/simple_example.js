@@ -32,11 +32,9 @@ SimpleExample.App = function(div = document.body) {
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enablePan = false;
 
-    this.surfaceGeometry = new THREE.ParametricGeometry(function(u, v, p) {
-        let x = 5 * u - 2.5,
-            y = 5 * v - 2.5;
-        p.set(x, y, Math.pow(x, 2) - Math.pow(y, 2));
-    }, 25, 25);
+    this.surfaceGeometry = new SurfaceGeometry(function(x, y) {
+        return Math.pow(x, 2) - Math.pow(y, 2);
+    });
 
     this.scene.add(new THREE.Mesh(this.surfaceGeometry,
                                   new THREE.MeshLambertMaterial({color:0x999999,
