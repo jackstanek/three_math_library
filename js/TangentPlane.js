@@ -3,5 +3,9 @@
  * the child of a Surface3D object.
  */
 var TangentPlane = function() {
+    this.
 
+    this.type = "TangentPlane";
 }
+
+TangentPlane.prototype = Object.create(THREE.Mesh.prototype);
