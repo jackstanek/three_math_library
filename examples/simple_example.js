@@ -33,7 +33,7 @@ SimpleExample.App = function(div = document.body) {
     this.controls.enablePan = false;
 
     this.surfaceGeometry = new SurfaceGeometry(function(x, y) {
-        return Math.pow(x, 2) - Math.pow(y, 2);
+        return (Math.pow(x, 2) - Math.pow(y, 2)) / 5;
     });
 
     this.scene.add(new THREE.Mesh(this.surfaceGeometry,

@@ -18,7 +18,7 @@ var PARAMETRIC_SURFACE_DEFAULT_PARAMS = {
 var SurfaceGeometry = function(f, params = {}) {
     setParamsFromDefaults(params, PARAMETRIC_SURFACE_DEFAULT_PARAMS);
 
-    Object.call(this, THREE.ParametricGeometry(function(u, v, t) {
+    THREE.ParametricGeometry.call(this, function(u, v, t) {
         let result = t || new THREE.Vector3(),
             xRange = (params.xMax - params.xMin),
             yRange = (params.yMax - params.yMin),
@@ -26,7 +26,7 @@ var SurfaceGeometry = function(f, params = {}) {
             y = params.yMin + v * yRange;
 
         return result.set(x, y, f(x, y));
-    }, params.slices, params.slices));
+    }, params.slices, params.slices);
 
     this.type = "SurfaceGeometry";
 }
